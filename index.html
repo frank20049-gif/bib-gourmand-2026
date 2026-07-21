@@ -1674,9 +1674,26 @@
     let currentFilter = 'all';
 
     document.addEventListener('DOMContentLoaded', () => {
+        updateMapLinks();
         loadState();
         updateProgress();
     });
+
+    function updateMapLinks() {
+        document.querySelectorAll('.card').forEach((card) => {
+            const shopName = card.querySelector('.shop-name')?.textContent?.trim();
+            const addressLink = card.querySelector('.info-group .info-content a');
+
+            if (!shopName || !addressLink) {
+                return;
+            }
+
+            const addressText = addressLink.textContent.trim();
+            const query = `${shopName} ${addressText}`;
+            const placePath = encodeURIComponent(shopName);
+            addressLink.href = `https://www.google.com/maps/place/${placePath}/?q=${encodeURIComponent(query)}`;
+        });
+    }
 
     function toggleCard(checkbox) {
         const card = checkbox.closest('.card');
